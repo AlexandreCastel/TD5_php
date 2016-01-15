@@ -1,0 +1,73 @@
+{% set add_book_active = 1 %}
+    {% extends 'layout.html.twig' %}
+
+    {% block contents %}
+            <div>
+                {% if book.image %}
+                    <img src="{{ app.request.basepath }}/uploads/{{ book.image }}.jpg" />
+                {% endif %}
+            </div>
+
+            <div>
+                {% if book.titre %}
+                    <h2>{{ book.titre }}</h2>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if book.auteur %}
+                    <h3>{{ book.auteur }}</h3>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if book.synopsis %}
+                    <p>{{ book.synopsis }}</p>
+                {% endif %}
+            </div>
+
+            {% set nbExemplaires = 0 %}  
+            {# Initiation du compteur d'exemplaire à 0 #}
+            
+            {%  if exemplaires is empty %}
+            
+            {% else %} {# Si il y a des exemplaires #}
+                <table class="table">
+                    <th>
+                        <td>Nombre d'exemplaires</td>
+                        <td>Emprunt</td>
+                        <td>Disponible</td>
+                    </th>
+                    <tbody>
+                        {% for exemplaire in exemplaires %}
+                            {% set nbExemplaires = nbExemplaires + 1 %}
+
+                            <tr>
+                                <td>{{ exemplaire.id }}</td>
+                                {% set reserved = 0 %}  
+                                {# Initiation de l'indice de reservation pour un exemplaire #}
+
+                                {% for emprunt in emprunts %}
+
+                                    {% if (exemplaire.id == emprunt.exemplaire) %}
+                                        {% set reserved = 1 %}
+                                        {% set nbExemplaires = nbExemplaires - 1 %}
+                                        <td><a><button type="button" class="btn btn-info">Reservé</button></a></td>
+                                        <td>le {{ emprunt.fin }}</td> {#date("d-m-Y", substr(emprunt.fin, 0, 9))#}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if reserved == 0 %}
+                                    <td><a  href="{{ path('emprunt', {'id': exemplaire.id}) }}"><button type="button" class="btn btn-success">Emprunter</button></a></td>
+                                    <td>Maintenant</td>
+                                {% endif %}
+                            </tr>
+                        
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <p>Nombre d'exemplaires disponibles: {{ nbExemplaires }}</p>
+
+            {% endif %}
+    {% endblock %}

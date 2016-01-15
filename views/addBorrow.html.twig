@@ -1,0 +1,30 @@
+{% set add_emprunt_active = 1 %}
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+
+    {% if success %}
+        <div class="alert alert-success loginsuccess">
+            Emprunt enregistré !
+        </div>
+    {% endif %}
+
+    {% if incorrectDate %}
+        <div class="alert alert-danger">
+            La date que vous avez saisie invalide !
+        </div>
+    {% endif %}
+
+    <form method="post">
+
+        <strong>Nom :</strong><br/>
+        <input class="form-control" type="text" name="personne" required />
+
+        <strong>Date de fin :</strong><br>
+        <input class="form-control" type="date" name="fin" />
+        
+        <input class="btn btn-success" type="submit" value="Emprunter" />
+    
+    </form>
+
+{% endblock %}
