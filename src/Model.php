@@ -81,7 +81,7 @@ class Model
     *   Getting last books
     */
     public function getLastBooks(){
-        $query = $this->pdo->prepare('SELECT livres.* FROM livres ORDER BY id DESC LIMIT 0, 6');
+        $query = $this->pdo->prepare('SELECT livres.* FROM livres ORDER BY id DESC LIMIT 0, 5');
         $this->execute($query);
         return $query->fetchAll();
     }
